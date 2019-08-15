@@ -15,7 +15,7 @@ public class ConfigDataHolder
     public static Dictionary<int, int[][]> levelDataDict { get; private set; } =
         new Dictionary<int, int[][]>();
 
-    public void OnInit()
+    public static void OnInit()
     {
         LoadColorConfig();
         LoadColorConfigs();
@@ -23,7 +23,7 @@ public class ConfigDataHolder
 
 
     //加载颜色配置
-    private void LoadColorConfig()
+    private static void LoadColorConfig()
     {
         var pathSeperator = Path.AltDirectorySeparatorChar;
         var path =
@@ -48,7 +48,7 @@ public class ConfigDataHolder
     }
 
     //加载关卡数据
-    private void LoadColorConfigs()
+    private static void LoadColorConfigs()
     {
         var pathSeperator = Path.AltDirectorySeparatorChar;
         var path =
@@ -85,7 +85,7 @@ public class ConfigDataHolder
         }
     }
 
-    private string[] LoadConfig(string path)
+    private static string[] LoadConfig(string path)
     {
         TextAsset textAsset = Resources.Load<TextAsset>(path);
         var rows = Regex.Split(textAsset.text, 

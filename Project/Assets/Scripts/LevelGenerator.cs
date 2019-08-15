@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 关卡生成器
+/// </summary>
 public class LevelGenerator : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Sprite baseBlock;
+
+
+    public void OnInit()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GeneratorLevel(int level)
     {
-        
+
     }
 }

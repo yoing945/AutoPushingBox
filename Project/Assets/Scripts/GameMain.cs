@@ -7,14 +7,11 @@ using UnityEngine;
 /// </summary>
 public class GameMain : Singleton<GameMain>
 {
-
-    public ConfigDataHolder configDataHolder { get; private set; } =
-        new ConfigDataHolder();
-
+    public LevelGenerator levelGenerator;
 
     private void Awake()
     {
-        configDataHolder.OnInit();
+        ConfigDataHolder.OnInit();
 
     }
 
