@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConfigsLoader : MonoBehaviour
+public class ColorDefine
 {
     
-
-
 }

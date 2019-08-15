@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMain : MonoBehaviour
+/// <summary>
+/// 游戏逻辑入口
+/// </summary>
+public class GameMain : Singleton<GameMain>
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public ConfigDataHolder configDataHolder { get; private set; } =
+        new ConfigDataHolder();
+
+    private void Awake()
     {
-        
+        configDataHolder.OnInit();
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
