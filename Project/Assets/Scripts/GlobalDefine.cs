@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GlobalDefine
 {
-    public class FileRelateDefine
+    public class ConfigRelateDefine
     {
         //CSV行分隔
         public const string CSV_CONFIG_ROW_SEPERATOR = "\r\n";
@@ -16,6 +16,11 @@ public class GlobalDefine
         public const string CONFIG_ROOT_PATH = "Configs";
         //颜色定义配置文件名
         public const string COLOR_CONFIG_NAME = "ColorDefine";
+        //颜色定义配置文件最大列数
+        public const int COLOR_CONFIG_MAX_COL = 2;
+
+        //关卡配置文件目录名
+        public const string LEVEL_CONFIG_FLODER_NAME = "Levels";
     }
     
 }

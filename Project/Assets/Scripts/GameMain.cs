@@ -11,6 +11,7 @@ public class GameMain : Singleton<GameMain>
     public ConfigDataHolder configDataHolder { get; private set; } =
         new ConfigDataHolder();
 
+
     private void Awake()
     {
         configDataHolder.OnInit();

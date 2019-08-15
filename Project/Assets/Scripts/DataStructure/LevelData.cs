@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorDefine
+public class LevelData
 {
-    
+    public int[][] matrix;
 }
