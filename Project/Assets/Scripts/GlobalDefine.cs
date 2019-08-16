@@ -52,3 +52,11 @@ public enum ObjectType
     YellowBox,
     RedBox
 }
+
+public enum GameModel
+{
+    //单关卡模式
+    LevelModel,
+    //总览模式
+    OverviewModel
+}

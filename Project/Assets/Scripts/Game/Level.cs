@@ -4,12 +4,22 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
-    public Tile sampleTile;
-    public ObjectOnTile sameleObjectOnTile;
     public Transform tilesTrans;
-    public Transform objectsOnTileTrans;
+    public Transform robotsTrans;
+    public Transform boxesTrans;
 
-    public Tile[][] tileDatas { get; set; }
-    public List<ObjectOnTile> robots { get; set; }
-    public List<ObjectOnTile> boxes { get; set; }
+    public int level { get; private set; }
+    public Tile[][] tileDatas { get; private set; }
+    public List<Robot> robots { get; private set; }
+    public List<Box> boxes { get; private set; }
+
+    //关卡是否完成
+    public bool levelCompleted { get; private set; }
+    
+
+    public void SetData(int level, Tile[][] tileDatas, List<Robot> robots, List<Box> boxes)
+    {
+        gameObject.name = $"Level_{level}";
+        this.level = level;
+    }
 }

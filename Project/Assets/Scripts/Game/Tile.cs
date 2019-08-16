@@ -6,8 +6,10 @@ public class Tile : BaseBlock
 {
     public TileType tileType { get; private set; }
 
-    public override void SetData(int level, Vector2Int logicPos)
+    public void SetData(int level, Vector2Int logicPos, int typeInt)
     {
+        gameObject.name = $"tile_{logicPos.x}_{logicPos.y}";
+
         //设置位置
         var levelData = ConfigDataHolder.levelDataDict[level];
         int matrixX = levelData[0].Length;
@@ -16,12 +18,9 @@ public class Tile : BaseBlock
 
         this.level = level;
         this.logicPos = logicPos;
-        int tileValue = PositionRelateMethods.GetLevelBlockValue(level, logicPos);
-        //右数第一位为地块类型
-        int tileTypeInt = tileValue % 10;
-        tileType = (TileType)(tileTypeInt);
-        spriteRender.sprite = GameMain.Instance.artResManager.FindTileSprite(tileTypeInt);
-        animator.runtimeAnimatorController = GameMain.Instance.artResManager.FindTileAnim(tileTypeInt);
+        this.tileType = (TileType)(typeInt);
+        spriteRender.sprite = GameMain.Instance.artResManager.FindTileSprite(typeInt);
+        animator.runtimeAnimatorController = GameMain.Instance.artResManager.FindTileAnim(typeInt);
     }
 
 }

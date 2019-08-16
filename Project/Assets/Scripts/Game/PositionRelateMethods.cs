@@ -7,9 +7,14 @@ public static class PositionRelateMethods
     //获取配置表关卡矩阵中元素值
     public static int GetLevelBlockValue(int level, Vector2Int logicPos)
     {
+        return GetLevelBlockValue(level, logicPos.x, logicPos.y);
+    }
+
+    public static int GetLevelBlockValue(int level, int x, int y)
+    {
         var array = ConfigDataHolder.levelDataDict[level];
-        var row = (array.Length -1) - logicPos.y;
-        var col = logicPos.x;
+        var row = (array.Length - 1) - y;
+        var col = x;
         return array[row][col];
     }
 

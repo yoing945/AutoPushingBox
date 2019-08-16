@@ -10,5 +10,4 @@ public abstract class BaseBlock : MonoBehaviour
     public int level { get; protected set; }
     public Vector2Int logicPos { get; protected set; }
 
-    public abstract void SetData(int level, Vector2Int logPos);
 }
