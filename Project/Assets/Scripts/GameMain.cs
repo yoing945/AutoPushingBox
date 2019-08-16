@@ -15,7 +15,7 @@ public class GameMain : Singleton<GameMain>
     private void Awake()
     {
         ConfigDataHolder.OnInit();
-
+        levelManager.OnInit();
     }
 
 }

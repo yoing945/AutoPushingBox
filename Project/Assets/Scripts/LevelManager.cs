@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour
 
     public void OnInit()
     {
-
+        GenerateLevel(1);
     }
 
     //产生关卡

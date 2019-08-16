@@ -25,6 +25,9 @@ public class GlobalDefine
 
     public class GameDefine
     {
+        //每个像素边长对应unity中的0.01个单位;
+        public const float UNIT_PER_PIXEL = 0.01f;
+
         public const int UNIT_BLOCK_PIXEL_X = 32;
         public const int UNIT_BLOCK_PIXEL_Y = 32;
         public const int UNIT_BLOCK_SPACING_X = 2;

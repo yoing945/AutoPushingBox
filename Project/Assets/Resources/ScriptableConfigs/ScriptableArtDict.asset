@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82e5cb106e6f76e4386d475ef8a4bde9, type: 3}
   m_Name: ScriptableArtDict
   m_EditorClassIdentifier: 
-  tileSprites: []
+  tileSprites:
+  - {fileID: 21300000, guid: e739d09400fc90447abdcad3d76c17b9, type: 3}
   tileAnims: []
   objOnTileSprites: []
   objOnTileAnims: []

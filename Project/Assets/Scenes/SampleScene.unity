@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 106cd84e9064df341985c4450953f290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableArtDict: {fileID: 0}
+  scriptableArtDict: {fileID: 11400000, guid: ed201aad4f9fe824982cf8ea29d9b926, type: 2}
 --- !u!4 &275377201
 Transform:
   m_ObjectHideFlags: 0
@@ -330,4 +330,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitDeltaTime: 1
   artResManager: {fileID: 275377200}
-  levelManager: {fileID: 0}
+  levelManager: {fileID: 337887344}

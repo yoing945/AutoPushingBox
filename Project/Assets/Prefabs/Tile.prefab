@@ -45,10 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c51687922b67f49bb34b2974c298ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 0
   spriteRender: {fileID: 3783222645485220951}
-  anim: {fileID: 3783222645485220950}
-  logicPosition: {x: 0, y: 0}
+  animator: {fileID: 3783222645485220950}
 --- !u!212 &3783222645485220951
 SpriteRenderer:
   m_ObjectHideFlags: 0

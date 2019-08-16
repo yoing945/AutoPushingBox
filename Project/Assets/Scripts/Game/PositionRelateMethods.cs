@@ -8,7 +8,7 @@ public static class PositionRelateMethods
     public static int GetLevelBlockValue(int level, Vector2Int logicPos)
     {
         var array = ConfigDataHolder.levelDataDict[level];
-        var row = array.Length - logicPos.y;
+        var row = (array.Length -1) - logicPos.y;
         var col = logicPos.x;
         return array[row][col];
     }
@@ -20,7 +20,7 @@ public static class PositionRelateMethods
             GlobalDefine.GameDefine.UNIT_BLOCK_SPACING_X);
         var y = -0.5f * (matrixY - 1) * (GlobalDefine.GameDefine.UNIT_BLOCK_PIXEL_Y +
             GlobalDefine.GameDefine.UNIT_BLOCK_SPACING_Y);
-        return new Vector2(x, y);
+        return new Vector2(x, y) * GlobalDefine.GameDefine.UNIT_PER_PIXEL;
     }
 
     public static Vector2 CalcLevelBlockPosition(int matrixX, int matrixY, Vector2Int pos)
@@ -38,10 +38,10 @@ public static class PositionRelateMethods
     public static Vector2 CalcLevelBlockPosition(Vector2 origionPos, int x, int y)
     {
         return new Vector2(
-            origionPos.x + 1f * x * (GlobalDefine.GameDefine.UNIT_BLOCK_PIXEL_X +
-                GlobalDefine.GameDefine.UNIT_BLOCK_SPACING_X),
-            origionPos.y + 1f * y * (GlobalDefine.GameDefine.UNIT_BLOCK_PIXEL_Y +
-                GlobalDefine.GameDefine.UNIT_BLOCK_SPACING_Y)
+            origionPos.x + GlobalDefine.GameDefine.UNIT_PER_PIXEL * x * 
+                (GlobalDefine.GameDefine.UNIT_BLOCK_PIXEL_X +GlobalDefine.GameDefine.UNIT_BLOCK_SPACING_X),
+            origionPos.y + GlobalDefine.GameDefine.UNIT_PER_PIXEL * y * 
+                (GlobalDefine.GameDefine.UNIT_BLOCK_PIXEL_Y + GlobalDefine.GameDefine.UNIT_BLOCK_SPACING_Y)
             );
     }
 }
