@@ -14,6 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSprites:
   - {fileID: 21300000, guid: e739d09400fc90447abdcad3d76c17b9, type: 3}
-  tileAnims: []
-  objOnTileSprites: []
-  objOnTileAnims: []
+  - {fileID: 21300000, guid: 851da2fd45767004096873e6c77e965c, type: 3}
+  tileAnims:
+  - {fileID: 9100000, guid: 3090e1a52e8415e4b9a9b0d4c7a9d939, type: 2}
+  - {fileID: 9100000, guid: a60e4b039069f074383bc9cf11b33a49, type: 2}
+  - {fileID: 9100000, guid: 700adb20e0a41d44ea6dcca61c480d53, type: 2}
+  objOnTileSprites:
+  - {fileID: 21300000, guid: 4ba5cf4ba0017804bab175dffbebd29f, type: 3}
+  - {fileID: 21300000, guid: db423b5361f96bc4ba971c3b7e3143fc, type: 3}
+  objOnTileAnims:
+  - {fileID: 9100000, guid: 737ceb549f2ba9749bc8e4e0c819e466, type: 2}
