@@ -9,7 +9,6 @@ public class LevelGenerator : MonoBehaviour
 {
     public Sprite baseBlock;
 
-
     public void OnInit()
     {
 
