@@ -22,5 +22,30 @@ public class GlobalDefine
         //关卡配置文件目录名
         public const string LEVEL_CONFIG_FLODER_NAME = "Levels";
     }
-    
+
+    public class GameDefine
+    {
+        public const int UNIT_BLOCK_PIXEL_X = 32;
+        public const int UNIT_BLOCK_PIXEL_Y = 32;
+        public const int UNIT_BLOCK_SPACING_X = 2;
+        public const int UNIT_BLOCK_SPACING_Y = 2;
+    }
+
+}
+
+public enum TileType
+{
+    Normal = 0,
+    Obstacle,
+    YellowEnd,
+    RedEnd,
+    Red
+}
+
+public enum ObjectType
+{
+    None = 0,
+    Robot,
+    YellowBox,
+    RedBox
 }

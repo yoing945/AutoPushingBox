@@ -7,7 +7,10 @@ using UnityEngine;
 /// </summary>
 public class GameMain : Singleton<GameMain>
 {
-    public LevelGenerator levelGenerator;
+    public float unitDeltaTime = 1f;
+
+    public ArtResManager artResManager;
+    public LevelManager levelManager;
 
     private void Awake()
     {
