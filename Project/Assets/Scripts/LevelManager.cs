@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 /// <summary>
 /// 关卡管理器
@@ -12,16 +13,25 @@ public class LevelManager : MonoBehaviour
     public Robot sampleRobot;
     public Box sampleBox;
 
+    public ReactiveProperty<int> currentLevelRP =
+        new ReactiveProperty<int>(1);
+
+    public List<Level> levels { get; private set; } =
+        new List<Level>();
+
+
     public void OnInit()
     {
-        GenerateLevel(1);
+        currentLevelRP.Subscribe(OnCurrentLevelChanged).AddTo(this);
     }
 
     //产生关卡
-    public void GenerateLevel(int level)
+    public Level GenerateLevel(int level)
     {
         var newLevel = Instantiate(sampleLevel, transform);
 
+        if (!ConfigDataHolder.levelDataDict.ContainsKey(level))
+            return null;
         var levelData = ConfigDataHolder.levelDataDict[level];
         int matrixX = levelData[0].Length;
         int matrixY = levelData.Length;
@@ -67,6 +77,32 @@ public class LevelManager : MonoBehaviour
         }
 
         newLevel.SetData(level, tileDatas, robots, boxes);
+
+        return newLevel;
+    }
+
+    private void OnCurrentLevelChanged(int levelIndex)
+    {
+        var level = levels.Find((l) => { if (l.level == levelIndex) return true; return false; });
+        if(level == null)
+        {
+            level = GenerateLevel(levelIndex);
+            if(level == null)
+            {
+                Debug.LogError($"无法生成关卡 [{levelIndex}]");
+                return;
+            }
+            levels.Add(level);
+        }
+
+        level.gameObject.SetActive(true);
+        foreach(var l in levels)
+        {
+            if (l.level != levelIndex)
+                l.gameObject.SetActive(false);
+        }
+
+        GameMain.Instance.uiManager.RefreshInstructionElements(level);
     }
 
 }

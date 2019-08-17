@@ -21,5 +21,8 @@ public class Level : MonoBehaviour
     {
         gameObject.name = $"Level_{level}";
         this.level = level;
+        this.tileDatas = tileDatas;
+        this.robots = robots;
+        this.boxes = boxes;
     }
 }

@@ -5,9 +5,23 @@ using UnityEngine;
 public class Robot : BaseObjectOnTile
 {
     public bool isMoving { get; private set; }
+    public InstructionModel instructionModel { get; private set; }
+    public MovementModel movementModel { get; private set; }
+
+    //TODO 逻辑结构可调整
+    private void Init()
+    {
+        if (null == instructionModel)
+            instructionModel = new InstructionModel(this);
+        if (null == movementModel)
+            movementModel = new MovementModel(this);
+    }
+
 
     public override void SetData(int level, Vector2Int logicPos, int typeInt, int objIndex)
     {
+        Init();
+
         base.SetData(level, logicPos, typeInt, objIndex);
 
         gameObject.name = $"Robot_{index}";
@@ -35,6 +49,11 @@ public class InstructionModel: RobotBaseModel
     public InstructionModel(Robot robot)
     {
         this.m_Owner = robot;
+    }
+
+    public void SetInstruction(string str)
+    {
+        instruction = str;
     }
 }
 
