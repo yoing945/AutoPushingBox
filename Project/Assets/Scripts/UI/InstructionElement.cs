@@ -29,7 +29,7 @@ public class InstructionElement : MonoBehaviour
     {
         var levelManager = GameMain.Instance.levelManager;
         var robot = levelManager.levels[levelManager.currentLevelRP.Value].robots[robotIndex];
-        robot.instructionModel.SetInstruction(str);
+        robot.instructionModule.SetInstructionStream(str);
     }
 
 }

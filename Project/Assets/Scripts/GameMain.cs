@@ -12,7 +12,6 @@ public class GameMain : Singleton<GameMain>
 
     public ArtResManager artResManager;
     public LevelManager levelManager;
-    public InstructionManager instructionManager;
     public UIManager uiManager;
 
     public ReactiveProperty<GameModel> gameModelRP = 

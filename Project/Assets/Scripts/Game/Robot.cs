@@ -1,20 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class Robot : BaseObjectOnTile
 {
-    public bool isMoving { get; private set; }
-    public InstructionModel instructionModel { get; private set; }
-    public MovementModel movementModel { get; private set; }
+    public InstructionModule instructionModule { get; private set; }
+    public MovementModule movementModule { get; private set; }
 
     //TODO 逻辑结构可调整
     private void Init()
     {
-        if (null == instructionModel)
-            instructionModel = new InstructionModel(this);
-        if (null == movementModel)
-            movementModel = new MovementModel(this);
+        if (null == instructionModule)
+            instructionModule = new InstructionModule(this);
+        if (null == movementModule)
+            movementModule = new MovementModule(this);
     }
 
 
@@ -29,41 +29,68 @@ public class Robot : BaseObjectOnTile
 
 }
 
-public class RobotBaseModel
+public class RobotBaseModule
 {
     protected Robot m_Owner;
-
 }
 
 
 /// <summary>
 /// 指令模块
 /// </summary>
-public class InstructionModel: RobotBaseModel
+public class InstructionModule: RobotBaseModule
 {
     //指令流
-    public string instruction { get; private set; }
+    public string instructionStream { get; private set; } = "";
     //当前指令下标
-    public int currentIndex { get; private set; }
+    public ReactiveProperty<int> currentInstructionIndex = 
+        new ReactiveProperty<int>(0);
 
-    public InstructionModel(Robot robot)
+    public InstructionModule(Robot robot)
     {
         this.m_Owner = robot;
+
+        currentInstructionIndex.Subscribe(OnCurrentInstructionIndexChanged).AddTo(m_Owner);
     }
 
-    public void SetInstruction(string str)
+    public void SetInstructionStream(string str)
     {
-        instruction = str;
+        instructionStream = str;
+    }
+
+    public void ExecutionInstructionStream()
+    {
+
+    }
+
+    private void OnCurrentInstructionIndexChanged(int index)
+    {
+
     }
 }
 
 /// <summary>
 /// 行为模块
 /// </summary>
-public class MovementModel: RobotBaseModel
+public class MovementModule: RobotBaseModule
 {
-    public MovementModel(Robot robot)
+    public bool isMoving { get; private set; }
+
+    public MovementModule(Robot robot)
     {
         this.m_Owner = robot;
     }
+
+    public void OnMove()
+    {
+
+    }
+}
+
+/// <summary>
+/// 通用模块:指令解析模块
+/// </summary>
+public static class InstructionParsingModule
+{
+
 }
