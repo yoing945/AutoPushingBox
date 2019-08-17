@@ -13,16 +13,15 @@ public class LevelManager : MonoBehaviour
     public Robot sampleRobot;
     public Box sampleBox;
 
-    public ReactiveProperty<int> currentLevelRP =
-        new ReactiveProperty<int>(1);
+    public ReactiveProperty<int> currentLevelIndexRP =
+        new ReactiveProperty<int>(0);
 
     public List<Level> levels { get; private set; } =
         new List<Level>();
 
-
     public void OnInit()
     {
-        currentLevelRP.Subscribe(OnCurrentLevelChanged).AddTo(this);
+        currentLevelIndexRP.Subscribe(OnCurrentLevelChanged).AddTo(this);
     }
 
     //产生关卡
@@ -83,7 +82,7 @@ public class LevelManager : MonoBehaviour
 
     private void OnCurrentLevelChanged(int levelIndex)
     {
-        var level = levels.Find((l) => { if (l.level == levelIndex) return true; return false; });
+        var level = levels.Find((l) => { if (l.levelNum == levelIndex) return true; return false; });
         if(level == null)
         {
             level = GenerateLevel(levelIndex);
@@ -98,7 +97,7 @@ public class LevelManager : MonoBehaviour
         level.gameObject.SetActive(true);
         foreach(var l in levels)
         {
-            if (l.level != levelIndex)
+            if (l.levelNum != levelIndex)
                 l.gameObject.SetActive(false);
         }
 

@@ -13,6 +13,11 @@ public class UIManager : MonoBehaviour
     public Button gameModelButton;
     public GameObject bottom;
 
+    public Button runButton;
+    public Button resetButton;
+    public Button levelNextButton;
+    public Button levelPreButton;
+
     private List<InstructionElement> m_InstructionElements = 
         new List<InstructionElement>();
 
@@ -20,6 +25,10 @@ public class UIManager : MonoBehaviour
     {
         m_InstructionElements.Add(sample);
         gameModelButton.onClick.AddListener(OnGameModelButtonClick);
+        runButton.onClick.AddListener(OnRunButtonClick);
+        resetButton.onClick.AddListener(OnResetButtonClick);
+        levelNextButton.onClick.AddListener(OnLevelNextButtonClick);
+        levelPreButton.onClick.AddListener(OnLevelPreButtonClick);
     }
 
     //刷新指令条目
@@ -53,5 +62,29 @@ public class UIManager : MonoBehaviour
             GameMain.Instance.gameModelRP.Value = GameModel.LevelModel;
             bottom.SetActive(true);
         }
+    }
+
+    private void OnRunButtonClick()
+    {
+        var levelManager = GameMain.Instance.levelManager;
+        var level = levelManager.levels[levelManager.currentLevelIndexRP.Value];
+
+        var streams = new List<string>();
+        foreach(var e in m_InstructionElements)
+            streams.Add(e.inputField.text);
+        level.RunLevel(streams);
+    }
+
+    private void OnResetButtonClick()
+    {
+
+    }
+    private void OnLevelNextButtonClick()
+    {
+
+    }
+    private void OnLevelPreButtonClick()
+    {
+
     }
 }

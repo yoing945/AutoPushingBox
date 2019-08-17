@@ -16,20 +16,13 @@ public class InstructionElement : MonoBehaviour
 
     private void Awake()
     {
-        inputField.onEndEdit.AddListener(OnEndEdit);
+        inputField.contentType = InputField.ContentType.Alphanumeric;
     }
 
     public void SetData(int robotIndex)
     {
         this.robotIndex = robotIndex;
         inputField.text = "";
-    }
-
-    private void OnEndEdit(string str)
-    {
-        var levelManager = GameMain.Instance.levelManager;
-        var robot = levelManager.levels[levelManager.currentLevelRP.Value].robots[robotIndex];
-        robot.instructionModule.SetInstructionStream(str);
     }
 
 }

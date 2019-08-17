@@ -1071,6 +1071,10 @@ MonoBehaviour:
   sample: {fileID: 6939649579767817476}
   gameModelButton: {fileID: 912957754953185342}
   bottom: {fileID: 4400456576847151811}
+  runButton: {fileID: 8001623692265114512}
+  resetButton: {fileID: 7060180139695368548}
+  levelNextButton: {fileID: 8561047089172025921}
+  levelPreButton: {fileID: 623881379374710896}
 --- !u!1 &4400456577266344694
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,7 +1664,7 @@ GameObject:
   - component: {fileID: 38711296925625226}
   - component: {fileID: 623881379374710896}
   m_Layer: 5
-  m_Name: PreLevelButton
+  m_Name: LevelPreButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2014,7 +2018,7 @@ GameObject:
   - component: {fileID: 684712839202910070}
   - component: {fileID: 8561047089172025921}
   m_Layer: 5
-  m_Name: NextLevelButton
+  m_Name: LevelNextButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

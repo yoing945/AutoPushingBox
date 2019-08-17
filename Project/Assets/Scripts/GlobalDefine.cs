@@ -53,6 +53,17 @@ public enum ObjectType
     RedBox
 }
 
+public enum RobotState
+{
+    Stop = -1,
+    None = 0,
+    Waiting,
+    Up,
+    Down,
+    Left,
+    Right
+}
+
 public enum GameModel
 {
     //单关卡模式

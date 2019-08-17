@@ -516,10 +516,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7860388d3ba1c74997d218653089f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitDeltaTime: 1
+  unitDeltaTime: 0.1
   artResManager: {fileID: 275377200}
   levelManager: {fileID: 337887344}
-  instructionManager: {fileID: 0}
   uiManager: {fileID: 264433988}
 --- !u!1 &1718396270
 GameObject:
