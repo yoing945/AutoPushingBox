@@ -9,8 +9,15 @@ public class Level : MonoBehaviour
     public Transform robotsTrans;
     public Transform boxesTrans;
 
+    //终点地板对应物体类型
+    Dictionary<int, ObjectType> m_ToEndTileObjTypeDict =
+        new Dictionary<int, ObjectType> {
+            {(int)TileType.RedEnd, ObjectType.RedBox},
+            {(int)TileType.YellowEnd, ObjectType.YellowBox},
+        };
+
     private int m_RobotNumFinishOneTurn = 0;
-    public int levelNum { get; private set; }
+    public int level { get; private set; }
     private Tile[][] tileDatas;
     public List<Robot> robots { get; private set; }
     public List<Box> boxes { get; private set; }
@@ -24,7 +31,7 @@ public class Level : MonoBehaviour
     public void SetData(int level, Tile[][] tileDatas, List<Robot> robots, List<Box> boxes)
     {
         gameObject.name = $"Level_{level}";
-        this.levelNum = level;
+        this.level = level;
         this.tileDatas = tileDatas;
         this.robots = robots;
         this.boxes = boxes;
@@ -67,6 +74,7 @@ public class Level : MonoBehaviour
         return tileDatas[0].Length - 1;
     }
 
+    //开始新的一轮检测
     public void StartNewTurnDetection()
     {
         ++m_RobotNumFinishOneTurn;
@@ -74,18 +82,66 @@ public class Level : MonoBehaviour
             return;
         m_RobotNumFinishOneTurn = 0;
 
-        if(finishedRoundsRP.Value < GameMain.Instance.nextLevelUnlockRounds)
-            ++finishedRoundsRP.Value;
+        if(CanGainGoalDetection())
+        {
+            if (finishedRoundsRP.Value < GameMain.Instance.nextLevelUnlockRounds)
+                ++finishedRoundsRP.Value;
+        }
+        else
+        {
+            ResetLevel();
+        }
+        
         foreach (var robot in robots)
             robot.instructionModule.ExecutionInstructionStream();
     }
 
+    //检测是否能够得分
+    private bool CanGainGoalDetection()
+    {
+        //1.boxes没到目的地 2.boxes来到错误终点 3.robots占了boxes的初始位置
+        foreach(var box in boxes)
+        {
+            var endTile = GetTile(box.logicPos);
+            var endTileTypeInt = (int)endTile.tileType;
+            if (!m_ToEndTileObjTypeDict.ContainsKey(endTileTypeInt))
+                return false;
+            var goalObjType = m_ToEndTileObjTypeDict[endTileTypeInt];
+            if (goalObjType != box.objectType)
+                return false;
+            foreach (var robot in robots)
+            {
+                if (robot.logicPos == box.initLogicPos)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    //重置关卡
+    public void ResetLevel()
+    {
+        if (!levelRunning)
+            return;
+        levelRunning = false;
+        Debug.Log($"Level_{level} Reset!");
+
+        foreach(var robot in robots)
+            robot.ResetToInit();
+        foreach(var box in boxes)
+            box.ResetToInit();
+
+        m_RobotNumFinishOneTurn = 0;
+        finishedRoundsRP.Value = 0;
+    }
+
+    //运行关卡
     public void RunLevel(List<string> streams)
     {
         if (levelRunning)
             return;
         levelRunning = true;
-        Debug.Log($"Level_{levelNum} running!");
+        Debug.Log($"Level_{level} running!");
         SetAllRobotInstructionStream(streams);
         foreach (var robot in robots)
             robot.instructionModule.ExecutionInstructionStream();

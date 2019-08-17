@@ -34,6 +34,13 @@ public class Robot : BaseObjectOnTile
         gameObject.name = $"Robot_{index}";
     }
 
+    public override void ResetToInit()
+    {
+        base.ResetToInit();
+        movementModule.ResetMovement();
+        instructionModule.SetCurrentInstructionIndex(-1);
+    }
+
 }
 
 public class RobotBaseModule
@@ -82,11 +89,10 @@ public class InstructionModule: RobotBaseModule
 
     public void SetCurrentInstructionIndex(int index)
     {
-        m_Owner.movementModule.robotStateRP.Value = RobotState.None;
         if (index >= instructionStream.Length)
         {
             var levelManager = GameMain.Instance.levelManager;
-            var level = levelManager.levels[levelManager.currentLevelIndexRP.Value];
+            var level = levelManager.GetCurrentLevel();
             level.StartNewTurnDetection();
         }
         else
@@ -110,8 +116,7 @@ public class InstructionModule: RobotBaseModule
     private void OnCurrentInstructionIndexChanged(int index)
     {
         var robotState = InstructionParsing(index);
-        m_Owner.movementModule.robotStateRP.Value = robotState;
-
+        m_Owner.movementModule.DoInstruction(robotState);
     }
 
     //指令解析
@@ -142,60 +147,70 @@ public class InstructionModule: RobotBaseModule
 /// </summary>
 public class MovementModule: RobotBaseModule
 {
+
+    //当前行为
+    private System.IDisposable m_CurrentMovement;
+
     //行为状态
-    public ReactiveProperty<RobotState> robotStateRP =
-        new ReactiveProperty<RobotState>(RobotState.None);
+    public RobotState robotState { get; private set; }
+
 
     public MovementModule(Robot robot)
     {
         this.m_Owner = robot;
     }
-    public override void OnInit()
+
+    public void ResetMovement()
     {
-        robotStateRP.Subscribe(OnRobotStateRPChanged).AddTo(m_Owner);
+        if (m_CurrentMovement == null)
+            return;
+        m_CurrentMovement.Dispose();
+        robotState = RobotState.None;
     }
 
-    public void OnRobotStateRPChanged(RobotState state)
+    public System.IDisposable DoInstruction(RobotState state)
     {
+        robotState = state;
         Debug.Log($"Robot_{m_Owner.index}执行指令{state}");
-        if (state == RobotState.None)
-            return;
+        System.IDisposable movement = null;
         switch (state)
         {
             case RobotState.Waiting:
-                WaitingUnitTime();
+                movement = WaitingUnitTime();
                 break;
             case RobotState.Up:
-                Up();
+                movement = Up();
                 break;
             case RobotState.Down:
-                Down();
+                movement = Down();
                 break;
             case RobotState.Left:
-                Left();
+                movement = Left();
                 break;
             case RobotState.Right:
-                Right();
+                movement = Right();
                 break;
         }
+        m_CurrentMovement = movement;
+        return movement;
     }
 
-    private void WaitingUnitTime()
+    private System.IDisposable WaitingUnitTime()
     {
-        Observable.Timer(System.TimeSpan.FromSeconds(GameMain.Instance.unitDeltaTime)).
+        return Observable.Timer(System.TimeSpan.FromSeconds(GameMain.Instance.unitDeltaTime)).
             Subscribe(_ => {
                 var instructionModule = m_Owner.instructionModule;
                 instructionModule.SetCurrentInstructionIndex(instructionModule.GetCurrentInstructionIndex() + 1);
             }).AddTo(m_Owner);
     }
 
-    private void Up()
+    private System.IDisposable Up()
     {
         var levelManager = GameMain.Instance.levelManager;
-        var level = levelManager.levels[levelManager.currentLevelIndexRP.Value];
+        var level = levelManager.GetCurrentLevel();
         int levelMaxY = level.GetMaxY();
         if (m_Owner.logicPos.y == levelMaxY)
-            return;
+            return null;
 
         var objs = new List<BaseObjectOnTile>();
         objs.Add(m_Owner);
@@ -210,14 +225,14 @@ public class MovementModule: RobotBaseModule
         var lastObj = objs[objs.Count - 1];
         var outTile = level.GetTile(lastObj.logicPos.x, lastObj.logicPos.y + 1);
 
-        DoMove(level, objs, outTile);
+        return DoMove(level, objs, outTile);
     }
-    private void Down()
+    private System.IDisposable Down()
     {
         var levelManager = GameMain.Instance.levelManager;
-        var level = levelManager.levels[levelManager.currentLevelIndexRP.Value];
+        var level = levelManager.GetCurrentLevel();
         if (m_Owner.logicPos.y == 0)
-            return;
+            return null;
 
         var objs = new List<BaseObjectOnTile>();
         objs.Add(m_Owner);
@@ -232,16 +247,16 @@ public class MovementModule: RobotBaseModule
         var lastObj = objs[objs.Count - 1];
         var outTile = level.GetTile(lastObj.logicPos.x, lastObj.logicPos.y - 1);
 
-        DoMove(level, objs, outTile);
+        return DoMove(level, objs, outTile);
     }
 
-    private void Right()
+    private System.IDisposable Right()
     {
         var levelManager = GameMain.Instance.levelManager;
-        var level = levelManager.levels[levelManager.currentLevelIndexRP.Value];
+        var level = levelManager.GetCurrentLevel();
         int levelMaxX = level.GetMaxX();
         if (m_Owner.logicPos.x == levelMaxX)
-            return;
+            return null;
 
         var objs = new List<BaseObjectOnTile>();
         objs.Add(m_Owner);
@@ -256,15 +271,15 @@ public class MovementModule: RobotBaseModule
         var lastObj = objs[objs.Count - 1];
         var outTile = level.GetTile(lastObj.logicPos.x + 1, lastObj.logicPos.y);
 
-        DoMove(level, objs, outTile);
+        return DoMove(level, objs, outTile);
     }
 
-    private void Left()
+    private System.IDisposable Left()
     {
         var levelManager = GameMain.Instance.levelManager;
-        var level = levelManager.levels[levelManager.currentLevelIndexRP.Value];
+        var level = levelManager.GetCurrentLevel();
         if (m_Owner.logicPos.x == 0)
-            return;
+            return null;
 
         var objs = new List<BaseObjectOnTile>();
         objs.Add(m_Owner);
@@ -279,12 +294,12 @@ public class MovementModule: RobotBaseModule
         var lastObj = objs[objs.Count - 1];
         var outTile = level.GetTile(lastObj.logicPos.x - 1, lastObj.logicPos.y);
 
-        DoMove(level, objs, outTile);
+        return DoMove(level, objs, outTile);
     }
 
-    private void DoMove(Level level, List<BaseObjectOnTile> objs, Tile outTile)
+    private System.IDisposable DoMove(Level level, List<BaseObjectOnTile> objs, Tile outTile)
     {
-        Observable.Timer(System.TimeSpan.FromSeconds(GameMain.Instance.unitDeltaTime)).
+        return Observable.Timer(System.TimeSpan.FromSeconds(GameMain.Instance.unitDeltaTime)).
             Subscribe(_ => {
                 if (outTile != null && outTile.tileType != TileType.Obstacle)
                 {

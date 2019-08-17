@@ -517,6 +517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitDeltaTime: 0.1
+  nextLevelUnlockRounds: 5
   artResManager: {fileID: 275377200}
   levelManager: {fileID: 337887344}
   uiManager: {fileID: 264433988}

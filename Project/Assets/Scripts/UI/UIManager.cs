@@ -67,7 +67,7 @@ public class UIManager : MonoBehaviour
     private void OnRunButtonClick()
     {
         var levelManager = GameMain.Instance.levelManager;
-        var level = levelManager.levels[levelManager.currentLevelIndexRP.Value];
+        var level = levelManager.GetCurrentLevel();
 
         var streams = new List<string>();
         foreach(var e in m_InstructionElements)

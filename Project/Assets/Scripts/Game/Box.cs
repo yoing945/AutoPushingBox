@@ -12,12 +12,7 @@ public class Box : BaseObjectOnTile
             {(int)TileType.Red, ObjectType.RedBox},
         };
 
-    //终点地板对应物体类型
-    Dictionary<int, ObjectType> m_ToEndTileObjTypeDict =
-        new Dictionary<int, ObjectType> {
-            {(int)TileType.RedEnd, ObjectType.RedBox},
-            {(int)TileType.YellowEnd, ObjectType.YellowBox},
-        };
+    
 
     public override void SetData(int level, Vector2Int logicPos, int typeInt, int objIndex)
     {
@@ -35,28 +30,7 @@ public class Box : BaseObjectOnTile
         {
             this.objectType = m_ChangeObjTypeDict[tileTypeInt];
         }
-        else if(m_ToEndTileObjTypeDict.ContainsKey(tileTypeInt))
-        {
-            var goalObjType = m_ToEndTileObjTypeDict[tileTypeInt];
-            if (goalObjType == this.objectType)
-                GainGoal();
-            else
-                ToWrongEnd();
-        }
-
-    }
-
-    //得分
-    private void GainGoal()
-    {
-        Debug.Log($"得分！");
-        base.ResetToInit();
-    }
-
-    //箱子到达错误终点
-    private void ToWrongEnd()
-    {
-        Debug.Log($"箱子到达错误终点, 重置");
+        
     }
 
     public override void ResetToInit()
