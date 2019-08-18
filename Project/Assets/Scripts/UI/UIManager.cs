@@ -67,7 +67,7 @@ public class UIManager : MonoBehaviour
     private void RefreshButton(Level level)
     {
         levelNextButton.gameObject.SetActive(true);
-        levelPreButton.gameObject.SetActive(true);
+        levelPreButton.gameObject.SetActive(false);//DEMO不需要前一关的功能
 
         if (!level.levelCompleted)
             levelNextButton.gameObject.SetActive(false);
