@@ -44,8 +44,10 @@ public class UIManager : MonoBehaviour
         var robotCount = level.robots.Count;
         if (robotCount > m_InstructionElements.Count)
         {
-            for (int i = 0; i < m_InstructionElements.Count - robotCount; ++i)
-                Instantiate(sample, elementsTrans);
+            for (int i = 0; i < robotCount - m_InstructionElements.Count; ++i)
+            {
+                m_InstructionElements.Add(Instantiate(sample, elementsTrans));
+            }
         }
         for (int i = 0; i < robotCount; ++i)
         {

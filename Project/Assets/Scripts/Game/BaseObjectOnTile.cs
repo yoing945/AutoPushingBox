@@ -70,7 +70,7 @@ public class BaseObjectOnTile : BaseBlock
     public virtual void ResetToInit()
     {
         logicPos = initLogicPos;
-        var initTile = GameMain.Instance.levelManager.levels[index].GetTile(initLogicPos);
+        var initTile = GameMain.Instance.levelManager.GetCurrentLevel().GetTile(initLogicPos);
         transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBounce).
         OnComplete(()=>{
              transform.localPosition = initTile.transform.localPosition;
