@@ -49,10 +49,18 @@ public class UIManager : MonoBehaviour
                 m_InstructionElements.Add(Instantiate(sample, elementsTrans));
             }
         }
-        for (int i = 0; i < robotCount; ++i)
+        for(int i = 0; i < m_InstructionElements.Count; ++i)
         {
             var e = m_InstructionElements[i];
-            e.SetData(i);
+            if (i < robotCount)
+            {
+                e.gameObject.SetActive(true);
+                e.SetData(i);
+            }
+            else
+            {
+                e.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -94,7 +102,10 @@ public class UIManager : MonoBehaviour
 
         var streams = new List<string>();
         foreach(var e in m_InstructionElements)
-            streams.Add(e.inputField.text);
+        {
+            if(e.gameObject.activeSelf)
+                streams.Add(e.inputField.text);
+        }
         level.RunLevel(streams);
     }
 
@@ -106,6 +117,7 @@ public class UIManager : MonoBehaviour
     }
     private void OnLevelNextButtonClick()
     {
+        OnResetButtonClick();
         var levelManager = GameMain.Instance.levelManager;
         var maxLevel = ConfigDataHolder.GetMaxLevel();
         if (maxLevel == levelManager.currentLevelRP.Value)
@@ -115,6 +127,7 @@ public class UIManager : MonoBehaviour
     }
     private void OnLevelPreButtonClick()
     {
+        OnResetButtonClick();
         var levelManager = GameMain.Instance.levelManager;
         var minLevel = ConfigDataHolder.GetMinLevel();
         if (minLevel == levelManager.currentLevelRP.Value)

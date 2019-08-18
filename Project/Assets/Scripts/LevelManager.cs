@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
     public Box sampleBox;
 
     public ReactiveProperty<int> currentLevelRP =
-        new ReactiveProperty<int>(2);
+        new ReactiveProperty<int>(1);
 
     public List<Level> levels { get; private set; } =
         new List<Level>();

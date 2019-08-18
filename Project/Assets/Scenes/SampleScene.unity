@@ -517,7 +517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7860388d3ba1c74997d218653089f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitDeltaTime: 0.4
+  unitDeltaTime: 0.1
   nextLevelUnlockRounds: 5
   receiveFx: {fileID: 1453165250533614, guid: 344a75d3e9d3b7648b5123d3e7024f2c, type: 3}
   paintFx: {fileID: 966665152488310349, guid: 2c939203877ecc6449b6855b0ad99573, type: 3}
