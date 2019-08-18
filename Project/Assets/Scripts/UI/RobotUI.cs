@@ -28,8 +28,8 @@ public class RobotUI : MonoBehaviour
 
     public void SetData(int index)
     {
-        gameObject.name = $"RobotUI_{index + 1}";
         this.index = index;
-        text.text = index.ToString();
+        gameObject.name = $"RobotUI_{index + 1}";
+        text.text = $"{index + 1}";
     }
 }

@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
     public void OnInit()
     {
         m_InstructionElements.Add(sample);
+        //m_RobotUIs.Add(sampleRobotUI);
 
         gameModelButton.onClick.AddListener(OnGameModelButtonClick);
         runButton.onClick.AddListener(OnRunButtonClick);
@@ -48,9 +49,10 @@ public class UIManager : MonoBehaviour
     private void RefreshInstrcutionElements(Level level)
     {
         var robotCount = level.robots.Count;
+        var capacity = m_InstructionElements.Count;
         if (robotCount > m_InstructionElements.Count)
         {
-            for (int i = 0; i < robotCount - m_InstructionElements.Count; ++i)
+            for (int i = 0; i < robotCount - capacity; ++i)
             {
                 m_InstructionElements.Add(Instantiate(sample, elementsTrans));
             }
@@ -70,26 +72,14 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void RefreshButton(Level level)
-    {
-        levelNextButton.gameObject.SetActive(true);
-        levelPreButton.gameObject.SetActive(false);//DEMO不需要前一关的功能
-
-        if (!level.levelCompleted)
-            levelNextButton.gameObject.SetActive(false);
-
-        var levelManager = GameMain.Instance.levelManager;
-        Level preLevel = levelManager.GetPreLevel();
-        if(preLevel == null || preLevel.levelCompleted == false)
-            levelPreButton.gameObject.SetActive(false);
-    }
 
     private void RefreshRobotUI(Level level)
     {
         var robotCount = level.robots.Count;
+        var capacity = m_RobotUIs.Count;
         if (robotCount > m_RobotUIs.Count)
         {
-            for (int i = 0; i < robotCount - m_RobotUIs.Count; ++i)
+            for (int i = 0; i < robotCount - capacity; ++i)
             {
                 m_RobotUIs.Add(Instantiate(sampleRobotUI, robotUIsTrans));
             }
@@ -107,6 +97,21 @@ public class UIManager : MonoBehaviour
                 e.gameObject.SetActive(false);
             }
         }
+    }
+
+
+    private void RefreshButton(Level level)
+    {
+        levelNextButton.gameObject.SetActive(true);
+        levelPreButton.gameObject.SetActive(false);//DEMO不需要前一关的功能
+
+        if (!level.levelCompleted)
+            levelNextButton.gameObject.SetActive(false);
+
+        var levelManager = GameMain.Instance.levelManager;
+        Level preLevel = levelManager.GetPreLevel();
+        if(preLevel == null || preLevel.levelCompleted == false)
+            levelPreButton.gameObject.SetActive(false);
     }
 
     private void OnGameModelButtonClick()
