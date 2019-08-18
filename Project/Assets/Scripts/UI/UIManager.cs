@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour
     public void OnInit()
     {
         m_InstructionElements.Add(sample);
+
         gameModelButton.onClick.AddListener(OnGameModelButtonClick);
         runButton.onClick.AddListener(OnRunButtonClick);
         resetButton.onClick.AddListener(OnResetButtonClick);
@@ -31,8 +32,14 @@ public class UIManager : MonoBehaviour
         levelPreButton.onClick.AddListener(OnLevelPreButtonClick);
     }
 
+    public void RefreshUI(Level level)
+    {
+        RefreshInstrcutionElements(level);
+        RefreshButton(level);
+    }
+
     //刷新指令条目
-    public void RefreshInstructionElements(Level level)
+    private void RefreshInstrcutionElements(Level level)
     {
         var robotCount = level.robots.Count;
         if (robotCount > m_InstructionElements.Count)
@@ -40,11 +47,25 @@ public class UIManager : MonoBehaviour
             for (int i = 0; i < m_InstructionElements.Count - robotCount; ++i)
                 Instantiate(sample, elementsTrans);
         }
-        for(int i = 0; i< robotCount; ++i)
+        for (int i = 0; i < robotCount; ++i)
         {
             var e = m_InstructionElements[i];
             e.SetData(i);
         }
+    }
+
+    private void RefreshButton(Level level)
+    {
+        levelNextButton.gameObject.SetActive(true);
+        levelPreButton.gameObject.SetActive(true);
+
+        if (!level.levelCompleted)
+            levelNextButton.gameObject.SetActive(false);
+
+        var levelManager = GameMain.Instance.levelManager;
+        Level preLevel = levelManager.GetPreLevel();
+        if(preLevel == null || preLevel.levelCompleted == false)
+            levelPreButton.gameObject.SetActive(false);
     }
 
     private void OnGameModelButtonClick()
@@ -83,10 +104,20 @@ public class UIManager : MonoBehaviour
     }
     private void OnLevelNextButtonClick()
     {
-
+        var levelManager = GameMain.Instance.levelManager;
+        var maxLevel = ConfigDataHolder.GetMaxLevel();
+        if (maxLevel == levelManager.currentLevelRP.Value)
+            levelManager.currentLevelRP.Value = ConfigDataHolder.GetMinLevel();
+        else
+            ++levelManager.currentLevelRP.Value;
     }
     private void OnLevelPreButtonClick()
     {
-
+        var levelManager = GameMain.Instance.levelManager;
+        var minLevel = ConfigDataHolder.GetMinLevel();
+        if (minLevel == levelManager.currentLevelRP.Value)
+            levelManager.currentLevelRP.Value = ConfigDataHolder.GetMaxLevel();
+        else
+            --levelManager.currentLevelRP.Value;
     }
 }

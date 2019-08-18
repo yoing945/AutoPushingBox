@@ -55,4 +55,30 @@ public class ConfigDataHolder
         }
     }
 
+    public static int GetMaxLevel()
+    {
+        int maxLevel = 0;
+        foreach(var key in levelDataDict.Keys)
+        {
+            if (maxLevel < key)
+                maxLevel = key;
+        }
+        return maxLevel;
+    }
+
+    public static int GetMinLevel()
+    {
+        var level = 0;
+        foreach(var key in levelDataDict.Keys)
+        {
+            level = key;
+            break;
+        }
+        foreach (var key in levelDataDict.Keys)
+        {
+            if (level > key)
+                level = key;
+        }
+        return level;
+    }
 }

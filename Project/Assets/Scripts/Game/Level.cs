@@ -28,6 +28,8 @@ public class Level : MonoBehaviour
 
     private ReactiveProperty<int> finishedRoundsRP =
         new ReactiveProperty<int>(0);
+
+    public bool levelCompleted { get; private set; } = false;
     
     private void Init()
     {
@@ -189,8 +191,19 @@ public class Level : MonoBehaviour
 
     private void OnFinishedRoundsRPChanged(int value)
     {
+        //成功执行5轮且当前关卡是本关卡解锁下一关
         if (value < GameMain.Instance.nextLevelUnlockRounds)
             return;
-        //TODO 解锁下一关
+        if (GameMain.Instance.levelManager.currentLevelRP.Value != level)
+            return;
+        levelCompleted = true;
+        GameMain.Instance.uiManager.levelNextButton.gameObject.SetActive(true);
+    }
+
+    public bool CanUnlockNextLevel()
+    {
+        if (finishedRoundsRP.Value < GameMain.Instance.nextLevelUnlockRounds)
+            return false;
+        return true;
     }
 }
