@@ -23,4 +23,9 @@ public class Tile : BaseBlock
         animator.runtimeAnimatorController = GameMain.Instance.artResManager.FindTileAnim(typeInt);
     }
 
+    public void PlayReciveFx()
+    {
+        
+    }
+
 }

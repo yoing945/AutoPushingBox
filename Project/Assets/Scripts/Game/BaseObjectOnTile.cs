@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BaseObjectOnTile : BaseBlock
 {
@@ -60,7 +61,8 @@ public class BaseObjectOnTile : BaseBlock
     public void MoveToTile(Tile nextTile)
     {
         logicPos = nextTile.logicPos;
-        transform.localPosition = nextTile.transform.localPosition;
+        transform.DOKill();
+        transform.DOLocalMove(nextTile.transform.localPosition, GameMain.Instance.unitDeltaTime);
         EndMove(nextTile);
     }
 
@@ -69,6 +71,11 @@ public class BaseObjectOnTile : BaseBlock
     {
         logicPos = initLogicPos;
         var initTile = GameMain.Instance.levelManager.levels[index].GetTile(initLogicPos);
-        transform.localPosition = initTile.transform.localPosition;
+        transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBounce).
+        OnComplete(()=>{
+             transform.localPosition = initTile.transform.localPosition;
+             transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBounce);
+        });
+
     }
 }
