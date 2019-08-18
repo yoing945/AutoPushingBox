@@ -274,6 +274,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2449877264199493486, guid: 40230eb822a0e2449a70e41c6c62b737,
+        type: 3}
+      propertyPath: sampleRobotUI
+      value: 
+      objectReference: {fileID: 9141705765418582093, guid: d53f35f2418dfdf4081267cce7ebab4b,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40230eb822a0e2449a70e41c6c62b737, type: 3}
 --- !u!224 &264433987 stripped

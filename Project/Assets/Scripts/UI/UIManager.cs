@@ -9,7 +9,9 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public Transform elementsTrans;
+    public Transform robotUIsTrans;
     public InstructionElement sample;
+    public RobotUI sampleRobotUI;
     public Button gameModelButton;
     public GameObject bottom;
 
@@ -20,6 +22,9 @@ public class UIManager : MonoBehaviour
 
     private List<InstructionElement> m_InstructionElements = 
         new List<InstructionElement>();
+
+    private List<RobotUI> m_RobotUIs =
+        new List<RobotUI>();
 
     public void OnInit()
     {
@@ -36,6 +41,7 @@ public class UIManager : MonoBehaviour
     {
         RefreshInstrcutionElements(level);
         RefreshButton(level);
+        RefreshRobotUI(level);
     }
 
     //刷新指令条目
@@ -76,6 +82,31 @@ public class UIManager : MonoBehaviour
         Level preLevel = levelManager.GetPreLevel();
         if(preLevel == null || preLevel.levelCompleted == false)
             levelPreButton.gameObject.SetActive(false);
+    }
+
+    private void RefreshRobotUI(Level level)
+    {
+        var robotCount = level.robots.Count;
+        if (robotCount > m_RobotUIs.Count)
+        {
+            for (int i = 0; i < robotCount - m_RobotUIs.Count; ++i)
+            {
+                m_RobotUIs.Add(Instantiate(sampleRobotUI, robotUIsTrans));
+            }
+        }
+        for (int i = 0; i < m_RobotUIs.Count; ++i)
+        {
+            var e = m_RobotUIs[i];
+            if (i < robotCount)
+            {
+                e.gameObject.SetActive(true);
+                e.SetData(i);
+            }
+            else
+            {
+                e.gameObject.SetActive(false);
+            }
+        }
     }
 
     private void OnGameModelButtonClick()
