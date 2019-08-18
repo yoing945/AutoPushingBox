@@ -39,10 +39,10 @@ public class LevelManager : MonoBehaviour
         var robots = new List<Robot>();
         var boxes = new List<Box>();
 
-        for(int x = 0; x < matrixX; ++x )
+        for (int x = 0; x < matrixX; ++x)
         {
             var colxCells = new Tile[matrixY];
-            for(int y = 0; y < matrixY; ++y)
+            for (int y = 0; y < matrixY; ++y)
             {
                 int blockValue = PositionRelateMethods.GetLevelBlockValue(level, x, y);
 
@@ -70,7 +70,7 @@ public class LevelManager : MonoBehaviour
                     newObj.SetData(level, new Vector2Int(x, y), objTypeInt, boxes.Count);
                     boxes.Add(newObj);
                 }
-                
+
             }
             tileDatas[x] = colxCells;
         }
@@ -84,10 +84,10 @@ public class LevelManager : MonoBehaviour
     {
         Level level = GetCurrentLevel();
 
-        if(level == null)
+        if (level == null)
         {
             level = GenerateLevel(levelIndex);
-            if(level == null)
+            if (level == null)
             {
                 Debug.LogError($"无法生成关卡 [{levelIndex}]");
                 return;
@@ -96,24 +96,40 @@ public class LevelManager : MonoBehaviour
         }
 
         level.gameObject.SetActive(true);
-        foreach(var l in levels)
+        foreach (var l in levels)
         {
             if (l.level != levelIndex)
                 l.gameObject.SetActive(false);
         }
 
-        GameMain.Instance.uiManager.RefreshInstructionElements(level);
+        GameMain.Instance.uiManager.RefreshUI(level);
     }
 
     public Level GetCurrentLevel()
     {
-        foreach(var l in levels)
+        foreach (var l in levels)
         {
             if (l.level == currentLevelRP.Value)
                 return l;
         }
         return null;
 
+    }
+
+    public Level GetPreLevel()
+    {
+        var preLevelIndex = 0;
+        if (currentLevelRP.Value == ConfigDataHolder.GetMinLevel())
+            preLevelIndex = ConfigDataHolder.GetMaxLevel();
+        else
+            preLevelIndex = currentLevelRP.Value - 1;
+        foreach (var l in levels)
+        {
+            
+            if (l.level == preLevelIndex)
+                return l;
+        }
+        return null;
     }
 
 }
