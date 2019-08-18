@@ -34,6 +34,7 @@ public class Tile : BaseBlock
     {
         fx.SetActive(false);
         fx.SetActive(true);
+        GameMain.Instance.receiveSound.Play();
     }
 
 }

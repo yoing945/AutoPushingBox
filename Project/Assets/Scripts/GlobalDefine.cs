@@ -30,8 +30,8 @@ public class GlobalDefine
 
         public const int UNIT_BLOCK_PIXEL_X = 32;
         public const int UNIT_BLOCK_PIXEL_Y = 32;
-        public const int UNIT_BLOCK_SPACING_X = 2;
-        public const int UNIT_BLOCK_SPACING_Y = 2;
+        public const int UNIT_BLOCK_SPACING_X = 0;
+        public const int UNIT_BLOCK_SPACING_Y = 0;
     }
 
 }
