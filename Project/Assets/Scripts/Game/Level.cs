@@ -105,7 +105,8 @@ public class Level : MonoBehaviour
             ResetLevel();
             return;
         }
-        
+        if (Time.timeScale <5)
+            Time.timeScale += 0.5f;
         foreach (var robot in robots)
             robot.instructionModule.ExecutionInstructionStream();
     }
@@ -123,6 +124,7 @@ public class Level : MonoBehaviour
             var goalObjType = m_ToEndTileObjTypeDict[endTileTypeInt];
             if (goalObjType != box.objectType)
                 return false;
+            endTile.PlayReciveFx();
             foreach (var robot in robots)
             {
                 if (robot.logicPos == box.initLogicPos)
@@ -139,7 +141,7 @@ public class Level : MonoBehaviour
             return;
         levelRunning = false;
         Debug.Log($"Level_{level} Reset!");
-
+        Time.timeScale = 1;
         foreach(var robot in robots)
             robot.ResetToInit();
         foreach(var box in boxes)
@@ -155,6 +157,7 @@ public class Level : MonoBehaviour
         if (levelRunning)
             return;
         levelRunning = true;
+        Time.timeScale = 1;
         Debug.Log($"Level_{level} running!");
         SetAllRobotInstructionStream(streams);
         foreach (var robot in robots)

@@ -516,7 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7860388d3ba1c74997d218653089f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitDeltaTime: 0.1
+  unitDeltaTime: 0.4
   nextLevelUnlockRounds: 5
   artResManager: {fileID: 275377200}
   levelManager: {fileID: 337887344}
