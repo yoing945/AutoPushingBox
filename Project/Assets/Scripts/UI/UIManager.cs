@@ -42,9 +42,10 @@ public class UIManager : MonoBehaviour
     private void RefreshInstrcutionElements(Level level)
     {
         var robotCount = level.robots.Count;
-        if (robotCount > m_InstructionElements.Count)
+        var elementCount = m_InstructionElements.Count;
+        if (robotCount > elementCount)
         {
-            for (int i = 0; i < robotCount - m_InstructionElements.Count; ++i)
+            for (int i = 0; i < robotCount - elementCount; ++i)
             {
                 m_InstructionElements.Add(Instantiate(sample, elementsTrans));
             }
@@ -109,7 +110,7 @@ public class UIManager : MonoBehaviour
         var levelManager = GameMain.Instance.levelManager;
         var maxLevel = ConfigDataHolder.GetMaxLevel();
         if (maxLevel == levelManager.currentLevelRP.Value)
-            levelManager.currentLevelRP.Value = ConfigDataHolder.GetMinLevel();
+            GameMain.Instance.levelManager.AppleLevelInit();
         else
             ++levelManager.currentLevelRP.Value;
     }

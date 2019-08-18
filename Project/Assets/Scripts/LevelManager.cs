@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 using UniRx;
 
 /// <summary>
@@ -12,9 +13,13 @@ public class LevelManager : MonoBehaviour
     public Tile sampleTile;
     public Robot sampleRobot;
     public Box sampleBox;
+    public Camera mainCamera;
+    public GameObject apple1;
+    public GameObject apple2;
+    public GameObject woodBox;
 
     public ReactiveProperty<int> currentLevelRP =
-        new ReactiveProperty<int>(2);
+        new ReactiveProperty<int>(1);
 
     public List<Level> levels { get; private set; } =
         new List<Level>();
@@ -132,4 +137,37 @@ public class LevelManager : MonoBehaviour
         return null;
     }
 
+    public void AppleLevelInit()
+    {
+        //初始化位置
+        mainCamera.orthographicSize = 4;
+        var level1 = levels[0];
+        var level2 = levels[1];
+        var level3 = levels[2];
+        var level4 = levels[3];
+        level1.gameObject.SetActive(true);
+        level1.transform.position = new Vector2 (1, 3.49f);
+        level2.gameObject.SetActive(true);
+        level2.transform.position = new Vector2 (-0.76f, 3.01f);
+        level3.gameObject.SetActive(true);
+        level3.transform.position = new Vector2 (1.16f, 1.41f);
+        level4.gameObject.SetActive(true);
+        level4.transform.position = new Vector2 (-1.08f, 0.77f);
+
+        //补齐机器人指令
+        
+        //运行4个关卡
+
+        //生成苹果
+        StartCoroutine(CreatApple());
+    }
+
+    public IEnumerator CreatApple()
+    {
+        apple1.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        Instantiate(apple2, apple1.transform.position, apple2.transform.rotation);
+        apple1.gameObject.SetActive(false);
+        woodBox.gameObject.SetActive(true);
+    }
 }
