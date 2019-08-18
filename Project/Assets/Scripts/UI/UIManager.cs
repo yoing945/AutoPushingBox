@@ -9,7 +9,9 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public Transform elementsTrans;
+    public Transform robotUIsTrans;
     public InstructionElement sample;
+    public RobotUI sampleRobotUI;
     public Button gameModelButton;
     public GameObject bottom;
 
@@ -21,9 +23,13 @@ public class UIManager : MonoBehaviour
     private List<InstructionElement> m_InstructionElements = 
         new List<InstructionElement>();
 
+    private List<RobotUI> m_RobotUIs =
+        new List<RobotUI>();
+
     public void OnInit()
     {
         m_InstructionElements.Add(sample);
+        //m_RobotUIs.Add(sampleRobotUI);
 
         gameModelButton.onClick.AddListener(OnGameModelButtonClick);
         runButton.onClick.AddListener(OnRunButtonClick);
@@ -36,26 +42,63 @@ public class UIManager : MonoBehaviour
     {
         RefreshInstrcutionElements(level);
         RefreshButton(level);
+        RefreshRobotUI(level);
     }
 
     //刷新指令条目
     private void RefreshInstrcutionElements(Level level)
     {
         var robotCount = level.robots.Count;
-        var elementCount = m_InstructionElements.Count;
-        if (robotCount > elementCount)
+        var capacity = m_InstructionElements.Count;
+        if (robotCount > m_InstructionElements.Count)
         {
-            for (int i = 0; i < robotCount - elementCount; ++i)
+            for (int i = 0; i < robotCount - capacity; ++i)
             {
                 m_InstructionElements.Add(Instantiate(sample, elementsTrans));
             }
         }
-        for (int i = 0; i < robotCount; ++i)
+        for(int i = 0; i < m_InstructionElements.Count; ++i)
         {
             var e = m_InstructionElements[i];
-            e.SetData(i);
+            if (i < robotCount)
+            {
+                e.gameObject.SetActive(true);
+                e.SetData(i);
+            }
+            else
+            {
+                e.gameObject.SetActive(false);
+            }
         }
     }
+
+
+    private void RefreshRobotUI(Level level)
+    {
+        var robotCount = level.robots.Count;
+        var capacity = m_RobotUIs.Count;
+        if (robotCount > m_RobotUIs.Count)
+        {
+            for (int i = 0; i < robotCount - capacity; ++i)
+            {
+                m_RobotUIs.Add(Instantiate(sampleRobotUI, robotUIsTrans));
+            }
+        }
+        for (int i = 0; i < m_RobotUIs.Count; ++i)
+        {
+            var e = m_RobotUIs[i];
+            if (i < robotCount)
+            {
+                e.gameObject.SetActive(true);
+                e.SetData(i);
+            }
+            else
+            {
+                e.gameObject.SetActive(false);
+            }
+        }
+    }
+
 
     private void RefreshButton(Level level)
     {
@@ -95,7 +138,10 @@ public class UIManager : MonoBehaviour
 
         var streams = new List<string>();
         foreach(var e in m_InstructionElements)
-            streams.Add(e.inputField.text);
+        {
+            if(e.gameObject.activeSelf)
+                streams.Add(e.inputField.text);
+        }
         level.RunLevel(streams);
     }
 
@@ -107,6 +153,7 @@ public class UIManager : MonoBehaviour
     }
     private void OnLevelNextButtonClick()
     {
+        OnResetButtonClick();
         var levelManager = GameMain.Instance.levelManager;
         var maxLevel = ConfigDataHolder.GetMaxLevel();
         if (maxLevel == levelManager.currentLevelRP.Value)
@@ -116,6 +163,7 @@ public class UIManager : MonoBehaviour
     }
     private void OnLevelPreButtonClick()
     {
+        OnResetButtonClick();
         var levelManager = GameMain.Instance.levelManager;
         var minLevel = ConfigDataHolder.GetMinLevel();
         if (minLevel == levelManager.currentLevelRP.Value)
