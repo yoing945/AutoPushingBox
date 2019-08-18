@@ -22,6 +22,7 @@ public class InstructionElement : MonoBehaviour
     public void SetData(int robotIndex)
     {
         this.robotIndex = robotIndex;
+        normalText.text = $"{robotIndex + 1}号机器人";
         inputField.text = "";
     }
 
