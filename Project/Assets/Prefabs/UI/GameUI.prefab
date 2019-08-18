@@ -1140,6 +1140,7 @@ MonoBehaviour:
   sampleRobotUI: {fileID: 0}
   gameModelButton: {fileID: 912957754953185342}
   bottom: {fileID: 4400456576847151811}
+  levelText: {fileID: 1498355530486370929}
   runButton: {fileID: 8001623692265114512}
   resetButton: {fileID: 7060180139695368548}
   levelNextButton: {fileID: 8561047089172025921}

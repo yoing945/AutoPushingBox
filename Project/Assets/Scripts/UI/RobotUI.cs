@@ -12,6 +12,8 @@ public class RobotUI : MonoBehaviour
     {
         if (!gameObject.activeSelf)
             return;
+        if(GameMain.Instance.levelManager.allLevelsRunning)
+            return;
         var level = GameMain.Instance.levelManager.GetCurrentLevel();
         if (level == null)
             return;

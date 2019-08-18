@@ -42,7 +42,8 @@ public enum TileType
     Obstacle,
     YellowEnd,
     RedEnd,
-    Red
+    Red,
+    RobotInit
 }
 
 public enum ObjectType

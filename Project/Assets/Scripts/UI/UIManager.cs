@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     public RobotUI sampleRobotUI;
     public Button gameModelButton;
     public GameObject bottom;
+    public Text levelText;
 
     public Button runButton;
     public Button resetButton;
@@ -40,6 +41,9 @@ public class UIManager : MonoBehaviour
 
     public void RefreshUI(Level level)
     {
+        robotUIsTrans.gameObject.SetActive(true);
+        levelText.gameObject.SetActive(true);
+        levelText.text = $"关卡 1-{level.level}";
         RefreshInstrcutionElements(level);
         RefreshButton(level);
         RefreshRobotUI(level);
@@ -105,13 +109,15 @@ public class UIManager : MonoBehaviour
         levelNextButton.gameObject.SetActive(true);
         levelPreButton.gameObject.SetActive(false);//DEMO不需要前一关的功能
 
+        var levelManager = GameMain.Instance.levelManager;
+
         if (!level.levelCompleted)
             levelNextButton.gameObject.SetActive(false);
 
-        var levelManager = GameMain.Instance.levelManager;
         Level preLevel = levelManager.GetPreLevel();
         if(preLevel == null || preLevel.levelCompleted == false)
             levelPreButton.gameObject.SetActive(false);
+
     }
 
     private void OnGameModelButtonClick()
@@ -148,18 +154,21 @@ public class UIManager : MonoBehaviour
     private void OnResetButtonClick()
     {
         var levelManager = GameMain.Instance.levelManager;
-        var level = levelManager.GetCurrentLevel();
-        level.ResetLevel();
+        if (levelManager.allLevelsRunning)
+            ResetOnAllLevelsRun();
+        else
+            ResetOnSingleLevelRun();
     }
     private void OnLevelNextButtonClick()
     {
         OnResetButtonClick();
         var levelManager = GameMain.Instance.levelManager;
-        var maxLevel = ConfigDataHolder.GetMaxLevel();
-        if (maxLevel == levelManager.currentLevelRP.Value)
-            GameMain.Instance.levelManager.AppleLevelInit();
-        else
-            ++levelManager.currentLevelRP.Value;
+        //var maxLevel = ConfigDataHolder.GetMaxLevel();
+        ++levelManager.currentLevelRP.Value;
+        //if (maxLevel == levelManager.currentLevelRP.Value)
+        //    GameMain.Instance.levelManager.AppleLevelInit();
+        //else
+        //    ++levelManager.currentLevelRP.Value;
     }
     private void OnLevelPreButtonClick()
     {
@@ -170,5 +179,31 @@ public class UIManager : MonoBehaviour
             levelManager.currentLevelRP.Value = ConfigDataHolder.GetMaxLevel();
         else
             --levelManager.currentLevelRP.Value;
+    }
+
+    private void ResetOnSingleLevelRun()
+    {
+        var levelManager = GameMain.Instance.levelManager;
+        var level = levelManager.GetCurrentLevel();
+        level.ResetLevel();
+    }
+
+    //=================最终关特殊处理==================
+    //当运行所有关卡时
+    public void RefreshUIOnAllLevelsRun()
+    {
+        bottom.SetActive(false);
+        levelNextButton.gameObject.SetActive(false);
+        resetButton.gameObject.SetActive(false);
+        runButton.gameObject.SetActive(false);
+        robotUIsTrans.gameObject.SetActive(false);
+        gameModelButton.gameObject.SetActive(false);
+        levelText.gameObject.SetActive(false);
+
+    }
+
+    public void ResetOnAllLevelsRun()
+    {
+
     }
 }

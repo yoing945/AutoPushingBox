@@ -89,6 +89,20 @@ public class LevelManager : MonoBehaviour
 
     private void OnCurrentLevelChanged(int levelIndex)
     {
+        if (levelIndex <= ConfigDataHolder.GetMaxLevel())
+            RunSingleLevel(levelIndex);
+        else
+            RunAllLevels();
+    }
+
+    private void RunAllLevels()
+    {
+        AppleLevelInit();
+        GameMain.Instance.uiManager.RefreshUIOnAllLevelsRun();
+    }
+
+    private void RunSingleLevel(int levelIndex)
+    {
         Level level = GetCurrentLevel();
         Time.timeScale = 1;
         if (level == null)
@@ -202,7 +216,7 @@ public class LevelManager : MonoBehaviour
         //补齐机器人指令
         SetTotalRobotInstructionStream();
         //运行4个关卡
-        for (int i = 0; i < levels.Count - 1; ++i)
+        for (int i = 0; i < levels.Count; ++i)
             levels[i].RunLevel();
     }
 
@@ -221,6 +235,7 @@ public class LevelManager : MonoBehaviour
 
         if (value < levels.Count)
             return;
+        levelCountFinishedOneTurn.Value = 0;
         Debug.Log("生成苹果");
         //生成苹果
         StartCoroutine(CreatApple());

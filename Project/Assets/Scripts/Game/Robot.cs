@@ -93,7 +93,7 @@ public class InstructionModule: RobotBaseModule
         if (index >= instructionStream.Length)
         {
             var levelManager = GameMain.Instance.levelManager;
-            var level = levelManager.GetCurrentLevel();
+            var level = levelManager.levels[m_Owner.level - 1];
             ++level.robotNumFinishOneTurn.Value;
         }
         else
@@ -208,7 +208,7 @@ public class MovementModule: RobotBaseModule
     private System.IDisposable Up()
     {
         var levelManager = GameMain.Instance.levelManager;
-        var level = levelManager.GetCurrentLevel();
+        var level = levelManager.levels[m_Owner.level - 1];
         int levelMaxY = level.GetMaxY();
         if (m_Owner.logicPos.y == levelMaxY)
             return DoMove(null, null, null);
@@ -231,7 +231,7 @@ public class MovementModule: RobotBaseModule
     private System.IDisposable Down()
     {
         var levelManager = GameMain.Instance.levelManager;
-        var level = levelManager.GetCurrentLevel();
+        var level = levelManager.levels[m_Owner.level - 1];
         if (m_Owner.logicPos.y == 0)
             return DoMove(null, null, null);
 
@@ -254,7 +254,7 @@ public class MovementModule: RobotBaseModule
     private System.IDisposable Right()
     {
         var levelManager = GameMain.Instance.levelManager;
-        var level = levelManager.GetCurrentLevel();
+        var level = levelManager.levels[m_Owner.level - 1];
         int levelMaxX = level.GetMaxX();
         if (m_Owner.logicPos.x == levelMaxX)
             return DoMove(null, null, null);
@@ -278,7 +278,7 @@ public class MovementModule: RobotBaseModule
     private System.IDisposable Left()
     {
         var levelManager = GameMain.Instance.levelManager;
-        var level = levelManager.GetCurrentLevel();
+        var level = levelManager.levels[m_Owner.level - 1];
         if (m_Owner.logicPos.x == 0)
         {
             return DoMove(null, null, null);
