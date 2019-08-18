@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
     public Box sampleBox;
 
     public ReactiveProperty<int> currentLevelRP =
-        new ReactiveProperty<int>(0);
+        new ReactiveProperty<int>(1);
 
     public List<Level> levels { get; private set; } =
         new List<Level>();
@@ -86,7 +86,7 @@ public class LevelManager : MonoBehaviour
 
         if(level == null)
         {
-            level = GenerateLevel(levelIndex + 1);
+            level = GenerateLevel(levelIndex);
             if(level == null)
             {
                 Debug.LogError($"无法生成关卡 [{levelIndex}]");

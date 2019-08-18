@@ -67,6 +67,7 @@ public class BaseObjectOnTile : BaseBlock
     //重置到初始
     public virtual void ResetToInit()
     {
+        logicPos = initLogicPos;
         var initTile = GameMain.Instance.levelManager.levels[index].GetTile(initLogicPos);
         transform.localPosition = initTile.transform.localPosition;
     }

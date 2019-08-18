@@ -77,7 +77,9 @@ public class UIManager : MonoBehaviour
 
     private void OnResetButtonClick()
     {
-
+        var levelManager = GameMain.Instance.levelManager;
+        var level = levelManager.GetCurrentLevel();
+        level.ResetLevel();
     }
     private void OnLevelNextButtonClick()
     {

@@ -16,7 +16,6 @@ public class Level : MonoBehaviour
             {(int)TileType.YellowEnd, ObjectType.YellowBox},
         };
 
-    private int m_RobotNumFinishOneTurn = 0;
     public int level { get; private set; }
     private Tile[][] tileDatas;
     public List<Robot> robots { get; private set; }
@@ -24,9 +23,17 @@ public class Level : MonoBehaviour
 
     public bool levelRunning { get; private set; } = false;
 
+    public ReactiveProperty<int> robotNumFinishOneTurn = 
+        new ReactiveProperty<int>(0);
+
     private ReactiveProperty<int> finishedRoundsRP =
         new ReactiveProperty<int>(0);
     
+    private void Init()
+    {
+        robotNumFinishOneTurn.Subscribe(StartNewTurnDetection).AddTo(this);
+        finishedRoundsRP.Subscribe(OnFinishedRoundsRPChanged).AddTo(this);
+    }
 
     public void SetData(int level, Tile[][] tileDatas, List<Robot> robots, List<Box> boxes)
     {
@@ -35,6 +42,9 @@ public class Level : MonoBehaviour
         this.tileDatas = tileDatas;
         this.robots = robots;
         this.boxes = boxes;
+
+        Init();
+
     }
 
     public BaseObjectOnTile GetObjOnTile(int x, int y)
@@ -75,21 +85,23 @@ public class Level : MonoBehaviour
     }
 
     //开始新的一轮检测
-    public void StartNewTurnDetection()
+    private void StartNewTurnDetection(int robotFinishedCount)
     {
-        ++m_RobotNumFinishOneTurn;
-        if (m_RobotNumFinishOneTurn < robots.Count)
+        if (robotFinishedCount < robots.Count)
             return;
-        m_RobotNumFinishOneTurn = 0;
+        robotNumFinishOneTurn.Value = 0;
 
         if(CanGainGoalDetection())
         {
-            if (finishedRoundsRP.Value < GameMain.Instance.nextLevelUnlockRounds)
+            if (robotFinishedCount < GameMain.Instance.nextLevelUnlockRounds)
                 ++finishedRoundsRP.Value;
+            foreach (var box in boxes)
+                box.ResetToInit();
         }
         else
         {
             ResetLevel();
+            return;
         }
         
         foreach (var robot in robots)
@@ -131,7 +143,7 @@ public class Level : MonoBehaviour
         foreach(var box in boxes)
             box.ResetToInit();
 
-        m_RobotNumFinishOneTurn = 0;
+        robotNumFinishOneTurn.Value = 0;
         finishedRoundsRP.Value = 0;
     }
 
@@ -156,6 +168,11 @@ public class Level : MonoBehaviour
         {
             if (instrcutionLength < stream.Length)
                 instrcutionLength = stream.Length;
+        }
+
+        if(instrcutionLength == 0)
+        {
+            return;
         }
 
         for(int robotIndex = 0; robotIndex< streams.Count; ++robotIndex)

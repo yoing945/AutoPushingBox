@@ -84,8 +84,9 @@ public class InstructionModule: RobotBaseModule
     {
         //全部转为大写
         instructionStream = str.ToUpper();
-        Debug.LogWarning($"Robot_{m_Owner.index},指令流{instructionStream}.");
+        Debug.Log($"Robot_{m_Owner.index},指令流{instructionStream}.");
     }
+
 
     public void SetCurrentInstructionIndex(int index)
     {
@@ -93,7 +94,7 @@ public class InstructionModule: RobotBaseModule
         {
             var levelManager = GameMain.Instance.levelManager;
             var level = levelManager.GetCurrentLevel();
-            level.StartNewTurnDetection();
+            ++level.robotNumFinishOneTurn.Value;
         }
         else
         {
@@ -210,7 +211,7 @@ public class MovementModule: RobotBaseModule
         var level = levelManager.GetCurrentLevel();
         int levelMaxY = level.GetMaxY();
         if (m_Owner.logicPos.y == levelMaxY)
-            return null;
+            return DoMove(null, null, null);
 
         var objs = new List<BaseObjectOnTile>();
         objs.Add(m_Owner);
@@ -232,7 +233,7 @@ public class MovementModule: RobotBaseModule
         var levelManager = GameMain.Instance.levelManager;
         var level = levelManager.GetCurrentLevel();
         if (m_Owner.logicPos.y == 0)
-            return null;
+            return DoMove(null, null, null);
 
         var objs = new List<BaseObjectOnTile>();
         objs.Add(m_Owner);
@@ -256,7 +257,7 @@ public class MovementModule: RobotBaseModule
         var level = levelManager.GetCurrentLevel();
         int levelMaxX = level.GetMaxX();
         if (m_Owner.logicPos.x == levelMaxX)
-            return null;
+            return DoMove(null, null, null);
 
         var objs = new List<BaseObjectOnTile>();
         objs.Add(m_Owner);
@@ -279,7 +280,9 @@ public class MovementModule: RobotBaseModule
         var levelManager = GameMain.Instance.levelManager;
         var level = levelManager.GetCurrentLevel();
         if (m_Owner.logicPos.x == 0)
-            return null;
+        {
+            return DoMove(null, null, null);
+        }
 
         var objs = new List<BaseObjectOnTile>();
         objs.Add(m_Owner);
