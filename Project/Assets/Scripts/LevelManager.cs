@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
     public GameObject apple1;
     public GameObject apple2;
     public GameObject woodBox;
+    public AudioSource appleSound;
 
     public ReactiveProperty<int> currentLevelRP =
         new ReactiveProperty<int>(1);
@@ -238,6 +239,7 @@ public class LevelManager : MonoBehaviour
         levelCountFinishedOneTurn.Value = 0;
         Debug.Log("生成苹果");
         //生成苹果
+        appleSound.Play();
         StartCoroutine(CreatApple());
     }
 }
