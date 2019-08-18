@@ -92,6 +92,11 @@ public class Level : MonoBehaviour
         if (robotFinishedCount < robots.Count)
             return;
         robotNumFinishOneTurn.Value = 0;
+        //如果正在运行所有关卡
+        if(GameMain.Instance.levelManager.allLevelsRunning)
+        {
+            ++GameMain.Instance.levelManager.levelCountFinishedOneTurn.Value;
+        }
 
         if(CanGainGoalDetection())
         {
@@ -164,6 +169,18 @@ public class Level : MonoBehaviour
             robot.instructionModule.ExecutionInstructionStream();
     }
 
+    //运行关卡:运行所有关卡时调用
+    public void RunLevel()
+    {
+        if (levelRunning)
+            return;
+        levelRunning = true;
+        Time.timeScale = 1;
+        Debug.Log($"Level_{level} running!");
+        foreach (var robot in robots)
+            robot.instructionModule.ExecutionInstructionStream();
+    }
+
     //给所有机器人设置同长指令流
     private void SetAllRobotInstructionStream(List<string> streams)
     {
@@ -203,10 +220,4 @@ public class Level : MonoBehaviour
         GameMain.Instance.uiManager.levelNextButton.gameObject.SetActive(true);
     }
 
-    public bool CanUnlockNextLevel()
-    {
-        if (finishedRoundsRP.Value < GameMain.Instance.nextLevelUnlockRounds)
-            return false;
-        return true;
-    }
 }

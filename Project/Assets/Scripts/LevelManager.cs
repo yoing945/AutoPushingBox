@@ -27,6 +27,8 @@ public class LevelManager : MonoBehaviour
     public void OnInit()
     {
         currentLevelRP.Subscribe(OnCurrentLevelChanged).AddTo(this);
+
+        levelCountFinishedOneTurn.Subscribe(OnLevelCountFinishedOneTurnChanged).AddTo(this);
     }
 
     //产生关卡
@@ -137,8 +139,51 @@ public class LevelManager : MonoBehaviour
         return null;
     }
 
+    //==============第五关特例==============
+
+    public ReactiveProperty<int> levelCountFinishedOneTurn =
+        new ReactiveProperty<int>(0);
+
+    public bool allLevelsRunning { get; private set; } = false;
+
+
+    //将所有关卡的机器人长度指令补齐
+    private void SetTotalRobotInstructionStream()
+    {
+        int instrcutionLength = 0;
+        foreach(var level in levels)
+        {
+            var levelInstructionStreamLength = 
+                level.robots[0].instructionModule.instructionStream.Length;
+            if (instrcutionLength < levelInstructionStreamLength)
+                instrcutionLength = levelInstructionStreamLength;
+        }
+
+        if (instrcutionLength == 0)
+        {
+            return;
+        }
+
+        foreach(var level in levels)
+        {
+            foreach(var robot in level.robots)
+            {
+                var robotIL = robot.instructionModule.instructionStream.Length;
+                int addNum = instrcutionLength - robotIL;
+                char c = robot.instructionModule.instructionDict[(int)RobotState.Waiting];
+                var str = "";
+                for (int i = 0; i < addNum; ++i)
+                    str += c;
+                robot.instructionModule.SetInstructionStream(
+                    robot.instructionModule.instructionStream + str);
+            }
+        }
+    }
+
     public void AppleLevelInit()
     {
+        allLevelsRunning = true;
+
         //初始化位置
         mainCamera.orthographicSize = 4;
         var level1 = levels[0];
@@ -155,11 +200,10 @@ public class LevelManager : MonoBehaviour
         level4.transform.position = new Vector2 (-1.08f, 0.77f);
 
         //补齐机器人指令
-        
+        SetTotalRobotInstructionStream();
         //运行4个关卡
-
-        //生成苹果
-        StartCoroutine(CreatApple());
+        for (int i = 0; i < levels.Count - 1; ++i)
+            levels[i].RunLevel();
     }
 
     public IEnumerator CreatApple()
@@ -169,5 +213,16 @@ public class LevelManager : MonoBehaviour
         Instantiate(apple2, apple1.transform.position, apple2.transform.rotation);
         apple1.gameObject.SetActive(false);
         woodBox.gameObject.SetActive(true);
+    }
+
+    private void OnLevelCountFinishedOneTurnChanged(int value)
+    {
+        Debug.Log("OnLevelCountFinishedOneTurnChanged");
+
+        if (value < levels.Count)
+            return;
+        Debug.Log("生成苹果");
+        //生成苹果
+        StartCoroutine(CreatApple());
     }
 }
