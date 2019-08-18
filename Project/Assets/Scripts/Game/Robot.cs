@@ -302,14 +302,14 @@ public class MovementModule: RobotBaseModule
 
     private System.IDisposable DoMove(Level level, List<BaseObjectOnTile> objs, Tile outTile)
     {
+        if (outTile != null && outTile.tileType != TileType.Obstacle)
+        {
+            for (int i = 0; i < objs.Count - 1; ++i)
+                objs[i].MoveToTile(level.GetTile(objs[i + 1].logicPos));
+            objs[objs.Count - 1].MoveToTile(outTile);
+        }
         return Observable.Timer(System.TimeSpan.FromSeconds(GameMain.Instance.unitDeltaTime)).
             Subscribe(_ => {
-                if (outTile != null && outTile.tileType != TileType.Obstacle)
-                {
-                    for (int i = 0; i < objs.Count - 1; ++i)
-                        objs[i].MoveToTile(level.GetTile(objs[i + 1].logicPos));
-                    objs[objs.Count - 1].MoveToTile(outTile);
-                }
                 var instructionModule = m_Owner.instructionModule;
                 instructionModule.SetCurrentInstructionIndex(instructionModule.GetCurrentInstructionIndex() + 1);
             }).AddTo(m_Owner);

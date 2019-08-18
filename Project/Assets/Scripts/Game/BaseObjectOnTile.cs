@@ -64,7 +64,7 @@ public class BaseObjectOnTile : BaseBlock
         transform.DOKill();
         transform.DOLocalMove(nextTile.transform.localPosition, GameMain.Instance.unitDeltaTime)
         .OnKill(()=>{
-            transform.localPosition = nextTile.transform.localPosition;
+            //transform.localPosition = nextTile.transform.localPosition;
         });;
         EndMove(nextTile);
     }
