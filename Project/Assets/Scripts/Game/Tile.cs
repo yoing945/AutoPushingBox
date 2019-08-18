@@ -5,6 +5,7 @@ using UnityEngine;
 public class Tile : BaseBlock
 {
     public TileType tileType { get; private set; }
+    private GameObject fx;
 
     public void SetData(int level, Vector2Int logicPos, int typeInt)
     {
@@ -21,11 +22,18 @@ public class Tile : BaseBlock
         this.tileType = (TileType)(typeInt);
         spriteRender.sprite = GameMain.Instance.artResManager.FindTileSprite(typeInt);
         animator.runtimeAnimatorController = GameMain.Instance.artResManager.FindTileAnim(typeInt);
+        if (this.tileType == TileType.RedEnd || this.tileType == TileType.YellowEnd)
+        {
+            fx = Instantiate(GameMain.Instance.receiveFx,this.transform);
+            fx.SetActive(false);
+            fx.transform.SetParent(this.transform);
+        }
     }
 
     public void PlayReciveFx()
     {
-        
+        fx.SetActive(false);
+        fx.SetActive(true);
     }
 
 }

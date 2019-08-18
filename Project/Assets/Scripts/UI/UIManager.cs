@@ -52,13 +52,13 @@ public class UIManager : MonoBehaviour
         var text = gameModelButton.gameObject.GetComponentInChildren<Text>();
         if (GameMain.Instance.gameModelRP.Value == GameModel.LevelModel)
         {
-            text.text = "Overview";
+            text.text = "显示";
             GameMain.Instance.gameModelRP.Value = GameModel.OverviewModel;
             bottom.SetActive(false);
         }
         else
         {
-            text.text = "Level\nModel";
+            text.text = "隐藏";
             GameMain.Instance.gameModelRP.Value = GameModel.LevelModel;
             bottom.SetActive(true);
         }
