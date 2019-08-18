@@ -29,6 +29,7 @@ public class Box : BaseObjectOnTile
         if (m_ChangeObjTypeDict.ContainsKey(tileTypeInt))
         {
             this.objectType = m_ChangeObjTypeDict[tileTypeInt];
+            endTile.PlayFX();
         }
         
     }

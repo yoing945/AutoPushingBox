@@ -83,7 +83,7 @@ public class LevelManager : MonoBehaviour
     private void OnCurrentLevelChanged(int levelIndex)
     {
         Level level = GetCurrentLevel();
-
+        Time.timeScale = 1;
         if (level == null)
         {
             level = GenerateLevel(levelIndex);

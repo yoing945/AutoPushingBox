@@ -62,7 +62,10 @@ public class BaseObjectOnTile : BaseBlock
     {
         logicPos = nextTile.logicPos;
         transform.DOKill();
-        transform.DOLocalMove(nextTile.transform.localPosition, GameMain.Instance.unitDeltaTime);
+        transform.DOLocalMove(nextTile.transform.localPosition, GameMain.Instance.unitDeltaTime)
+        .OnKill(()=>{
+            transform.localPosition = nextTile.transform.localPosition;
+        });;
         EndMove(nextTile);
     }
 
@@ -72,10 +75,14 @@ public class BaseObjectOnTile : BaseBlock
         logicPos = initLogicPos;
         var initTile = GameMain.Instance.levelManager.GetCurrentLevel().GetTile(initLogicPos);
         transform.DOKill();
-        transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBounce).
-        OnComplete(()=>{
+        transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBounce)
+        .OnComplete(()=>{
              transform.localPosition = initTile.transform.localPosition;
              transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBounce);
+        })
+        .OnKill(()=>{
+            transform.localPosition = initTile.transform.localPosition;
+            transform.localScale = Vector3.one;
         });
 
     }

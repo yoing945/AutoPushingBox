@@ -28,13 +28,24 @@ public class Tile : BaseBlock
             fx.SetActive(false);
             fx.transform.SetParent(this.transform);
         }
+        if (this.tileType == TileType.Red)
+        {
+            fx = Instantiate(GameMain.Instance.paintFx,this.transform);
+            fx.SetActive(false);
+            fx.transform.SetParent(this.transform);
+        }
     }
 
-    public void PlayReciveFx()
+    public void PlayReciveFxAndSound()
+    {
+        PlayFX();
+        GameMain.Instance.receiveSound.Play();
+    }
+
+    public void PlayFX()
     {
         fx.SetActive(false);
         fx.SetActive(true);
-        GameMain.Instance.receiveSound.Play();
     }
 
 }

@@ -124,7 +124,7 @@ public class Level : MonoBehaviour
             var goalObjType = m_ToEndTileObjTypeDict[endTileTypeInt];
             if (goalObjType != box.objectType)
                 return false;
-            endTile.PlayReciveFx();
+            endTile.PlayReciveFxAndSound();
             foreach (var robot in robots)
             {
                 if (robot.logicPos == box.initLogicPos)

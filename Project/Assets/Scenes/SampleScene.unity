@@ -520,6 +520,7 @@ MonoBehaviour:
   unitDeltaTime: 0.4
   nextLevelUnlockRounds: 5
   receiveFx: {fileID: 1453165250533614, guid: 344a75d3e9d3b7648b5123d3e7024f2c, type: 3}
+  paintFx: {fileID: 966665152488310349, guid: 2c939203877ecc6449b6855b0ad99573, type: 3}
   receiveSound: {fileID: 923817451}
   artResManager: {fileID: 275377200}
   levelManager: {fileID: 337887344}

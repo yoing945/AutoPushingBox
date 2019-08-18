@@ -11,6 +11,7 @@ public class GameMain : Singleton<GameMain>
     public float unitDeltaTime = 1f;
     public int nextLevelUnlockRounds = 5;
     public GameObject receiveFx;
+    public GameObject paintFx;
     public AudioSource receiveSound;
 
     public ArtResManager artResManager;
